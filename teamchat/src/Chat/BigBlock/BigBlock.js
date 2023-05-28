@@ -7,37 +7,59 @@ function BigBlock({ me }) {
 
   const [selectedContact, setSelectedContact] = useState(null);
   const [sentList, setSentList] = useState([]);
+  
+
+  async function getMessagesForContact(contact, me) {
+    const res = await fetch(`http://localhost:5000/api/Chats/${contact.id}/Messages`, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'bearer ' + me.token // attach the token
+      },
+    });
+    const fetchedData = await res.json();
+    const sortedMessages = fetchedData.sort((a, b) => {
+      return new Date(a.created) - new Date(b.created);
+    });
+    setSentList(sortedMessages);
+  };
 
   //each time sent message we add it to the sentList
-  const addMassage = function (message) {
+  const addMassage = async function (message) {
     const newMassage = {
-      sentTo: selectedContact.id,
-      sent: message,
-      time: new Date().toLocaleString('en-GB', {
-        hour: 'numeric', minute: 'numeric', second: 'numeric',
-        day: 'numeric', month: 'numeric', year: 'numeric'
-      })
+      "msg": message,
     };
-    setSentList([...sentList, newMassage]);
-    //updating the selected contact with the last message
-    selectedContact.massage = newMassage.sent;
-    selectedContact.time = newMassage.time;
-    setSelectedContact(selectedContact);
+    const res = await fetch(`http://localhost:5000/api/Chats/${selectedContact.id}/Messages`, {
+      method: 'post',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'bearer ' + me.token // attach the token
+      },
+      body: JSON.stringify(newMassage),
+    });
+    if (res.ok) {
+      const result = await res.text();
+      const newMessage = JSON.parse(result);
+      setSentList([...sentList, newMessage]);
+      setSelectedContact(selectedContact);
+    } else {
+      console.log('Error:', res.status);
+    }
   }
 
   //setter for the selected contact
   const changeContact = function (contact) {
     setSelectedContact(contact);
+    getMessagesForContact(contact, me);
   };
 
   return (
     <div id="frame">
 
       {/* contacts, profile and search for contacts */}
-      <LeftPanel sentList={sentList} changeContact={changeContact} me={me} />
+      <LeftPanel changeContact={changeContact} sentList={sentList} me={me} />
 
       {/* messages, contact profile and input messages */}
-      <RightPanel selectedContact={selectedContact} image={me.addPicture}
+      <RightPanel selectedContact={selectedContact} me={me}
         sentList={sentList} addMassage={addMassage} />
 
     </div>

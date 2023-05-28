@@ -1,12 +1,10 @@
-import Sent from "./Sent"
+import SentAndRecieve from "./SentAndRecieve"
 //a function that takes the list of all the messages,
 //and filters only those that the id of the contact
 //that im messaging to will be shown
-function SentListResults({ Massages, contact, image }) {
+function SentListResults({ Massages, contact, me }) {
     const sentList = Massages.map((Massage, key) => {
-        if (contact.id == Massage.sentTo) {
-            return <Sent key={key} Massage={Massage} image={image} />;
-        }
+        return <SentAndRecieve key={key} Massage={Massage} me={me} contact={contact} />;
     });
     return (
         <>{sentList}</>

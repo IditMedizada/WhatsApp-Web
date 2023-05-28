@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import WebTitle from "../Registration/WebTitle/WebTitle";
 
-function Login({ list, setUser }) {
+function Login({ setUser }) {
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
 
@@ -29,23 +29,51 @@ function Login({ list, setUser }) {
 
   // if the user enter correct username and password- move to chat screen
   // else print Username or Password incorrect message
-  const handleClick = (event) => {
+  const handleClick = async (event) => {
     event.preventDefault();
-    let found = false;
-    // check if the list is not empty
-    if (list && list.length > 0) {
-      list.forEach((item) => {
-        // goes through all the users in the array and checks if the username and password match them
-        if (item.name === name && item.password === password) {
-          setUser(item);
-          navigate('/Chat');
-          found = true;
+    // let found = false;
+    // // check if the list is not empty
+    // if (list && list.length > 0) {
+    //   list.forEach((item) => {
+    //     // goes through all the users in the array and checks if the username and password match them
+    //     if (item.username === name && item.password === password) {
+    //       setUser(item);
+    //       navigate('/Chat');
+    //       found = true;
+    //     }
+    //   });
+    // }
+    // if (!found) {
+    //   setErrorMessage("Username or Password incorrect");
+    // }
+
+    const item = {
+      "username": name,
+      "password": password
+    };
+    
+    const res = await fetch('http://localhost:5000/api/Tokens', {
+      'method': 'post',
+      'headers': {
+        'Content-Type': 'application/json',
+      },
+      'body': JSON.stringify(item),
+    });
+    
+    if (res.ok) {
+        const token = await res.text(); // Retrieve the token from the response body
+        const user = {
+          "username": item.username,
+          "token": token
         }
-      });
-    }
-    if (!found) {
+        setUser(user);
+        navigate('/Chat');
+      }
+    else {
       setErrorMessage("Username or Password incorrect");
+      return;
     }
+    
   };
 
   return (

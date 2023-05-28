@@ -6,7 +6,7 @@ import contacts from "../LeftPanel/Contacts/ContactsList";
 //the side where all the messages with the contact,
 //the contact profile that we chating right now
 //and the input for messages are shwon
-function RightPanel({ selectedContact, image, addMassage, sentList }) {
+function RightPanel({ selectedContact, me, addMassage, sentList }) {
     if (!selectedContact && contacts.length > 0) {
         selectedContact = contacts[0];
     }
@@ -25,7 +25,7 @@ function RightPanel({ selectedContact, image, addMassage, sentList }) {
         //<!--Profile contents-->
         <div className="content">
             <ContactProfile contact={selectedContact} />
-            <Massages sentList={sentList} contact={selectedContact} image={image} />
+            <Massages sentList={sentList} contact={selectedContact} me={me} />
             <WriteMassage addMassage={addMassage} />
         </div>
     );
