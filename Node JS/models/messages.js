@@ -1,0 +1,35 @@
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+
+const Messages = new Schema({
+    id: {
+        type: String,
+        require: true
+    },
+    created: {
+        type: Date,
+        default: Date.now
+    },
+    sender: {
+        username: {
+            type: String,
+            require: true
+        },
+        displayName: {
+            type: String,
+            require: true
+        },
+        profilePic: {
+            type: String,
+            require: true
+        }
+
+    },
+    content: {
+        type: String,
+        require: true
+    }
+
+});
+
+module.exports = mongoose.model('Messages', Messages);
