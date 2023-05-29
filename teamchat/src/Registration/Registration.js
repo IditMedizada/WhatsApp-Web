@@ -50,7 +50,7 @@ function Registration({ list, setList }) {
   }
 
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     //handle username
     if (name.trim().length < 2 || name.trimEnd().length > 10) {
@@ -58,11 +58,11 @@ function Registration({ list, setList }) {
       return;
     }
     //check if username exists
-    if (list.some(username => username.name === name)) {
-      setErrorMessage('Username already exists.');
-      return;
-    }
-    
+    // if (list.some(username => username.name === name)) {
+    //   setErrorMessage('Username already exists.');
+    //   return;
+    // }
+
     //handle password
     const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,16}$/;
     if (!regex.test(password)) {
@@ -87,14 +87,28 @@ function Registration({ list, setList }) {
     //registration successful
 
     const item = {
-      name: name,
-      password: password,
-      confirmPassword: confirmPassword,
-      displayName: displayName,
-      addPicture: addPicture
+      "username": name,
+      "password": password,
+      "displayName": displayName,
+      "profilePic": addPicture
     };
-    setList([...list, item]);
-    navigate("/");
+
+    const res = await fetch('http://localhost:5000/api/Users', {
+      'method': 'post',
+      'headers': {
+        'Content-Type': 'application/json',
+      },
+      'body': JSON.stringify(item),
+    });
+
+    if(res.ok){
+      // setList([...list, item]);
+      navigate("/");
+    }else{
+      setErrorMessage('Username already exists.');
+      return;
+    }
+   
   };
   return (
     <div className="background">

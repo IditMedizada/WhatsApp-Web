@@ -12,8 +12,8 @@ function ContactProfile({ contact }) {
 
     return (
         <div className="contact-profile">
-            <img src={contact.image} alt="" />
-            <p className="boldFont contactBackgroundColor">{contact.name}</p>
+            <img src={contact.user.profilePic} alt="" />
+            <p className="boldFont contactBackgroundColor">{contact.user.displayName}</p>
         </div>
     );
 }

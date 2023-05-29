@@ -1,28 +1,38 @@
-// the contact that beeing showed on the left
-function Contact({ contact, isSelected, onSelectContact, sentList }) {
-  //const variable to check if a contact is beeing selected
+// the contact that is being shown on the left
+function Contact({ contact, isSelected, onSelectContact }) {
+  // const variable to check if a contact is being selected
   const selectedClass = isSelected ? "selected" : "";
 
-  //take the last message
-  const lastMessage = sentList.filter(message => message.sentTo === contact.id).pop();
-  let preview = lastMessage?.sent || "";
+  // Extract the last message from the contact object
+  const { lastMessage } = contact;
 
-  //check if the last message is longer than 20 letters
-  if (preview.length > 20) {
-    preview = preview.substring(0, 20) + "...";
-  }
+  // Extract the content and timestamp from the last message
+  const { content, created } = lastMessage || {};
 
-  //show the contact, his last message it's time and his picture
-  //also if we hover or select a contact it shows a different color
+  // Convert the timestamp to a Date object
+  const timestamp = new Date(created);
+
+  // Convert the timestamp to a formatted date string
+  const formattedDate = timestamp.toLocaleString("en-GB", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+    second: "numeric"
+  });
+
+  // Show the contact, their last message, its time, and their picture
+  // Also, if we hover or select a contact, it shows a different color
   return (
     <li onClick={() => onSelectContact(contact)} className={`contact ${selectedClass}`}>
       <div className="wrap">
         <span className="contact-status"></span>
-        <img src={contact.image} alt="" />
+        <img src={contact.user.profilePic} alt="" />
         <div className="meta">
-          <p className="name boldFont">{contact.name}</p>
-          <p className="preview font_medium">{preview}</p>
-          <span className="font_small">{lastMessage?.time || ""}</span>
+          <p className="name boldFont">{contact.user.displayName}</p>
+          <p className="preview font_medium">{content}</p>
+          <span className="font_small">{formattedDate}</span>
         </div>
       </div>
     </li>

@@ -1,37 +1,75 @@
 import AddContact from "./AddContact/AddContact";
 import Search from "./Search/Search";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ContactListResults from "./Contacts/ContactListResults";
 import contacts from "./Contacts/ContactsList";
 import Profile from "./Profile/Profile";
 import { doSearch } from "./Search/doSearch";
 import { createNewContact } from "./Contacts/CreateNewContact";
+import profilePictures from "../profilePicture";
 
 //a side where the profile, search for contacts,
 // the list of contacts and add contacts button
 // is beeing showed
-function LeftPanel({ sentList, changeContact, me }) {
+function LeftPanel({ changeContact, me, sentList }) {
 
     //lists of contats
-    const [contactsList, setContactList] = useState(contacts);
-    const [originalContactsList, setOriginalContactsList] = useState(contacts);
+    const [contactsList, setContactList] = useState([]);
+    const [originalContactsList, setOriginalContactsList] = useState([]);
+    useEffect(() => {
+        async function getContactsList() {
+            const res = await fetch('http://localhost:5000/api/Chats', {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'bearer ' + me.token // attach the token
+                },
+            });
+            const fetchedData = await res.json();
+            setContactList(fetchedData);
+            setOriginalContactsList(fetchedData);
+        }
+
+        getContactsList();
+    }, []);
+
 
     //setter of the search for contacts
-    const handleSearch = function (q) {
-        const searchedContactsList = doSearch(originalContactsList, q);
+    const handleSearch = async function (q) {
+        const searchedContactsList = doSearch(originalContactsList,q);
         setContactList(searchedContactsList);
     }
 
     //setter of the list of conntacts when a new contacts is beeing created
-    const handleNewContact = function (q) {
-        createNewContact(originalContactsList, setOriginalContactsList, setContactList, q, me);
+    //setter of the list of contacts when a new contact is being created
+    const handleNewContact = async function (q) {
+        const newContact = { "username": q };
+        // Update the list on the server
+        const res = await fetch('http://localhost:5000/api/Chats', {
+            method: 'post',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: 'bearer ' + me.token // attach the token
+            },
+            body: JSON.stringify(newContact),
+        });
+        if (res.ok) {
+            const result = await res.text();
+            // Update the two lists locally
+            const newContact = JSON.parse(result);
+            setOriginalContactsList([...originalContactsList, newContact]);
+            setContactList([...contactsList, newContact]);
+                        
+        } else {
+            console.log('Error:', res.status);
+        }
     };
+
 
     return (
         <div id="sidepanel">
             <Profile me={me} />
             <Search doSearch={handleSearch} />
-            <ContactListResults sentList={sentList} contacts={contactsList} changeContact={changeContact} />
+            <ContactListResults sentList={sentList} contacts={contactsList} changeContact={changeContact} me={me} />
             <AddContact newContact={handleNewContact} />
         </div>
     );
