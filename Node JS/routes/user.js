@@ -3,25 +3,25 @@ const messagesController = require('../controllers/messages.js');
 const express = require('express');
 var router = express.Router();
 
-//registration
-router.route('/api/Users').post(userController.createUser);
+//registration- /api/Users
+router.route('/').post(userController.createUser);
 
-//get user details
-router.route('api/Users/{username}').get(userController.getUserDetails);
+//get user details- /api/Users/{username}
+router.route('/:username').get(userController.getUserDetails);
 
-//login
-router.route('api/Tokens').post(userController.login);
+//login - api/Token
+router.route('/Tokens').post(userController.login);
 
-//returns details about a specific user
-router.route('/api/Chants').post(userController.postUserDetails);
+// //returns details about a specific user - /api/Chats
+// router.route('/').post(userController.postUserDetails);
 
-//add new message to the DB
-router.route('/api/Chats/{id}/Messages'). post(messagesController.addMessage);
+// //add new message to the DB -  api/Chats/{id}/Messages
+// router.route('/{id}/Messages'). post(messagesController.addMessage);
 
-//get user messages
-router.route('/api/Chats/{id}/Messages').get(messagesController.getUserMessages);
+// //get user messages - api/Chats/{id}/Messages
+// router.route('/{id}/Messages').get(messagesController.getUserMessages);
 
-//get users
-router.route('/api/Chats').get(messagesController.getUsers);
+// //get users - /api/Chats
+// router.route('/').get(messagesController.getUsers);
 
 module.exports = router;

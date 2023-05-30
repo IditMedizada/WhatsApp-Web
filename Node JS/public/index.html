@@ -7,16 +7,16 @@
     <title>Document</title>
 </head>
 <body>
-    <button onclick={handleClick}></button>
+    <button onclick="handleClick()">button</button>
     <script>
         async function handleClick(){
             const item = {
-                "username": "idit",
+                "username": "shoshi",
                 "password": "12345",
                 "displayName": "idit",
                 "profilePic": "idit"
             };
-            const res = await fetch (`http://localhost:5000/api/Users`, {
+            const res = await fetch (`http://127.0.0.1:5000/api/Users`, {
                 'method': 'post',
                 'headers': {
                     'Content-Type': 'application/json',
