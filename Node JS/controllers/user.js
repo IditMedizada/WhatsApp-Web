@@ -50,8 +50,8 @@ const login = async (req, res) => {
         if (!user) {
             return res.status(404).json({ error: 'Invalid username or password' });
         }
-        console.log("login");
-        console.log(user.token);
+        // console.log("login");
+        // console.log(user.token);
         res.status(200).json({ token: user.token });
     } catch (error) {
         res.status(500).json({ error: 'Something went wrong' });
@@ -70,9 +70,8 @@ const postUserDetails = async (req, res) => {
             // Verify the token is valid
             if (validateToken(token)) {
                 const { username } = req.body;
-                console.log("hello1111");
+                // console.log("hello1111");
                 const user = await userService.postUserDetails(username, token);
-                console.log("hello2222");
 
                 if (!user) {
                     return res.status(404).json({ error: 'Invalid username' });

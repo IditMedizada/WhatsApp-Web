@@ -34,30 +34,30 @@ const getUserDetails = async (username) => {
 const login = async (username1, password) => {
     let user = await User.findOne({ username: username1, password });
     if (user != null) {
-      // create token for the user
-      const createToken = jwt.sign({ username: username1 }, key);
-      // Find the user by their ID and update the token
-      user = await User.findOneAndUpdate(
-        { username: username1 },
-        { token: createToken },
-        { new: true }
-      );
+        // create token for the user
+        const createToken = jwt.sign({ username: username1 }, key);
+        // Find the user by their ID and update the token
+        user = await User.findOneAndUpdate(
+            { username: username1 },
+            { token: createToken },
+            { new: true }
+        );
     }
     return user;
-  };
-  
+};
+
 
 //returns details about a specific user
 const postUserDetails = async (username1, token) => {
-    const addUser = await User.findOne({ username: username1 });
-    const user = await User.find({ token });
+    const newUser = await User.findOne({ username: username1 });
+    const user = await User.findOne({ token });
     const newContact = {
         username: username1
     };
-    user.contacts.push({newContact});
-    console.log("1")
+    user.contacts.push(newContact);
+
     await user.save(); // Save the updated user document
-    return addUser;
+    return newUser;
 };
 
 module.exports = { createUser, getUserDetails, login, postUserDetails };

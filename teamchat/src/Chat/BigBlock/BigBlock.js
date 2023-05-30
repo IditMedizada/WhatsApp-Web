@@ -17,15 +17,15 @@ function BigBlock({ me }) {
       },
     });
     const fetchedData = await res.json();
-    const sortedMessages = fetchedData.sort((a, b) => {
-      return new Date(a.created) - new Date(b.created);
-    });
-    setSentList(sortedMessages);
+    // const sortedMessages = fetchedData.sort((a, b) => {
+    //   return new Date(a.created) - new Date(b.created);
+    // });
+    setSentList(fetchedData);
   };
 
   //each time sent message we add it to the sentList
   const addMassage = async function (message) {
-    const newMassage = {
+    const sendMessage = {
       "msg": message,
     };
     const res = await fetch(`http://localhost:5000/api/Chats/${selectedContact.id}/Messages`, {
@@ -34,7 +34,7 @@ function BigBlock({ me }) {
         'Content-Type': 'application/json',
         Authorization: 'bearer ' + me.token // attach the token
       },
-      body: JSON.stringify(newMassage),
+      body: JSON.stringify(sendMessage),
     });
     if (res.ok) {
       const result = await res.text();
