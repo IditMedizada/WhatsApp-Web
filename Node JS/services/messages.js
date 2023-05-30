@@ -25,30 +25,32 @@ const getUserMessages = async (userId) => {
 
 }
 
-const getUsers = async () => {
-        const users = await User.find({});
-        const usersArray = [];
-        for (const user of users) {
-            const lastMessage = await Message.findOne({ 'sender.username': user.username })
-                .sort({ created: -1 })
-                .select('content id created');
+const getUsers = async (token) => {
+    const usersArray = [];
+    const user = await User.findOne({ token });
+    const userContacts = user.contacts;
+    for (const contact of userContacts) {
+        const newContact = await User.findOne({ username: contact.username });
+        const lastMessage = await Message.findOne({ 'sender.username': newContact.username })
+            .sort({ created: -1 })
+            .select('content id created');
 
-            const userWithLastMessage = {
-                id: user.id,
-                user: {
-                    username: user.username,
-                    displayName: user.displayName,
-                    profilePic: user.profilePic
-                },
-                lastMessage: lastMessage ? {
-                    id: lastMessage.id,
-                    created: lastMessage.created,
-                    content: lastMessage.content
-                } : null
-            };
+        const userWithLastMessage = {
+            id: newContact.id,
+            user: {
+                username: newContact.username,
+                displayName: newContact.displayName,
+                profilePic: newContact.profilePic
+            },
+            lastMessage: lastMessage ? {
+                id: lastMessage.id,
+                created: lastMessage.created,
+                content: lastMessage.content
+            } : null
+        };
 
-            usersArray.push(userWithLastMessage);
-        }
-        return usersArray;
+        usersArray.push(userWithLastMessage);
+    }
+    return usersArray;
 }
 module.exports = { addMessage, getUserMessages, getUsers };

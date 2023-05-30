@@ -1,5 +1,6 @@
 
 const users = require('./routes/user');
+const chats = require('./routes/chats');
 //const customEnv = require('custom-env');
 const mongoose = require('mongoose');
 const cors= require('cors');
@@ -13,14 +14,13 @@ app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended:true}));
 app.use(express.json());
 
-// Set up routes
-app.use('/users', users);
+
 
 //configure environment variables
 //customEnv.env(process.env.NODE_ENV, './config');
 
 //connect to MongoDB
-mongoose.connect("mongodb://localhost:27017/myDatabase", {
+mongoose.connect("mongodb://127.0.0.1:27017/new", {
     useNewUrlParser: true,
     useUnifiedTopology: true
 }).then(() => {
@@ -30,6 +30,10 @@ mongoose.connect("mongodb://localhost:27017/myDatabase", {
 });
 
 
+// Set up routes
+app.use('/api/Users', users);
+app.use('/api/Chats', chats);
+app.use('/api', users);
 
 //start the server
 // app.listen(process.env.PORT);

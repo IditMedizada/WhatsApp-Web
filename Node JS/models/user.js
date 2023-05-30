@@ -1,32 +1,41 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+const Contact = new Schema({
+    name: {
+        type: String,
+        required: true
+    },
+});
+
 const User = new Schema({
     username: {
         type: String,
-        require: true
+        required: true
     },
     password: {
         type: String,
-        require: true
+        required: true
     },
 
     displayName: {
         type: String,
-        require: true
+        required: true
     },
     profilePic: {
         type: String,
-        require: true
+        required: true
     },
     id: {
         type: String,
-        require: true
+        required: true
     },
     token: {
-        type: String,
-        require: true
-    }
+        type: String
+    },
+    contacts: [Contact] // Array of Contact objects
+
 });
 
 module.exports = mongoose.model('User', User);
+// module.exports = mongoose.model('Contact', Contact);
