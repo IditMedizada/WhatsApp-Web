@@ -3,8 +3,8 @@ const User = require('../models/user.js');
 
 let messageCounter = 0;
 //add new message ti the DB
-const addMessage = async (msg, userId) => {
-    const user = await Message.findOne({ id: userId });
+const addMessage = async (msg, token) => {
+    const user = await User.findOne({ token: token });
     const message = new Message({
         id: messageCounter,
         sender: {
@@ -19,7 +19,7 @@ const addMessage = async (msg, userId) => {
 };
 
 const getUserMessages = async (userId) => {
-    const user = await Message.findOne({ id: userId });
+    const user = await User.findOne({ id: userId });
     const messages = await Message.find({ 'sender.username': user.username });
     return messages;
 

@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const Contact = new Schema({
-    name: {
+    username: {
         type: String,
         required: true
     },
@@ -27,7 +27,7 @@ const User = new Schema({
         required: true
     },
     id: {
-        type: String,
+        type: Number,
         required: true
     },
     token: {

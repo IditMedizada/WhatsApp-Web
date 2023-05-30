@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const Messages = new Schema({
     id: {
-        type: String,
+        type: Number,
         require: true
     },
     created: {
