@@ -1,26 +1,44 @@
 const Message = require('../models/messages.js');
 const User = require('../models/user.js');
 
-let messageCounter = 0;
-//add new message ti the DB
-const addMessage = async (msg, token) => {
-    const user = await User.findOne({ token: token });
+//add new message to the DB
+const addMessage = async (msg, token, userId) => {
+    const sender = await User.findOne({ token: token });
+    const receiver = await User.findOne({ id: userId });
+    const latestMessageCounter = await Message.findOne().sort({ id: -1 }).limit(1).select('id');
+    const idCounter = latestMessageCounter ? latestMessageCounter.id + 1 : 1;
     const message = new Message({
-        id: messageCounter,
+        receiver: receiver.username,
+        id: idCounter,
         sender: {
-            username: user.username,
-            displayName: user.displayName,
-            profilePic: user.profilePic
+            username: sender.username,
+            displayName: sender.displayName,
+            profilePic: sender.profilePic
         },
         content: msg
     });
-    messageCounter = messageCounter + 1;
     return await message.save();
 };
 
-const getUserMessages = async (userId) => {
-    const user = await User.findOne({ id: userId });
-    const messages = await Message.find({ 'sender.username': user.username });
+const getUserMessages = async (userId, token) => {
+    const receiver = await User.findOne({ id: userId });
+    const sender = await User.findOne({ token: token });
+    const messages = await Message.find({
+        $or: [
+            {
+                $and: [
+                    { 'sender.username': sender.username },
+                    { receiver: receiver.username },
+                ]
+            },
+            {
+                $and: [
+                    { 'sender.username': receiver.username },
+                    { receiver: sender.username },
+                ]
+            }
+        ]
+    });
     return messages;
 
 }
