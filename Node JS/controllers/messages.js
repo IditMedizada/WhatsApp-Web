@@ -18,7 +18,7 @@ const addMessage = async (req, res) => {
                 //console.log(data);
                 const { msg } = req.body;
                 userId = req.params.id;
-                const message = await messageService.addMessage(msg, token);
+                const message = await messageService.addMessage(msg, token,userId);
                 res.status(200).json( {id: message.id, created: message.created, 
                     sender: message.sender, content: message.content} );
             } else {
@@ -48,7 +48,7 @@ const getUserMessages = async (req, res) => {
             if (validateToken(token)) {
                 const data = jwt.verify(token, key);
                 userId = req.params.id;
-                const messages = await messageService.getUserMessages(userId);
+                const messages = await messageService.getUserMessages(userId, token);
                 res.status(200).json( messages );
             } else {
                 res.status(401).json({ error: 'Invalid token' });
