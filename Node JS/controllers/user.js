@@ -73,7 +73,7 @@ const postUserDetails = async (req, res) => {
                 // console.log("hello1111");
                 const user = await userService.postUserDetails(username, token);
 
-                if (!user) {
+                if (user == null) {
                     return res.status(404).json({ error: 'Invalid username' });
                 }
                 res.status(200).json({ id: user.id, user: { username: user.username, displayName: user.displayName, profilePic: user.profilePic } });

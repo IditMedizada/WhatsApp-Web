@@ -2,6 +2,10 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const Messages = new Schema({
+    receiver: {
+        type: String,
+        required: true
+    },
     id: {
         type: Number,
         require: true
