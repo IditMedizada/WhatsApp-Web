@@ -70,9 +70,7 @@ const postUserDetails = async (req, res) => {
             // Verify the token is valid
             if (validateToken(token)) {
                 const { username } = req.body;
-                // console.log("hello1111");
                 const user = await userService.postUserDetails(username, token);
-
                 if (user == null) {
                     return res.status(404).json({ error: 'Invalid username' });
                 }
@@ -90,7 +88,7 @@ const postUserDetails = async (req, res) => {
 
 };
 
-
+//validate Token
 function validateToken(token) {
     try {
         const decoded = jwt.verify(token, key);

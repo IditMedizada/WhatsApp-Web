@@ -1,7 +1,6 @@
 
 const users = require('./routes/user');
 const chats = require('./routes/chats');
-//const customEnv = require('custom-env');
 const mongoose = require('mongoose');
 const cors= require('cors');
 const bodyParser = require('body-parser');
@@ -14,10 +13,6 @@ app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended:true}));
 app.use(express.json());
 
-
-
-//configure environment variables
-//customEnv.env(process.env.NODE_ENV, './config');
 
 //connect to MongoDB
 mongoose.connect("mongodb://127.0.0.1:27017/new", {
@@ -36,5 +31,4 @@ app.use('/api/Chats', chats);
 app.use('/api', users);
 
 //start the server
-// app.listen(process.env.PORT);
 app.listen(5000);
