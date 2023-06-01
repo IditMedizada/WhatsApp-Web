@@ -11,11 +11,9 @@ import profilePictures from "../profilePicture";
 //a side where the profile, search for contacts,
 // the list of contacts and add contacts button
 // is beeing showed
-function LeftPanel({ changeContact, me, sentList }) {
+function LeftPanel({ changeContact, me, sentList, contactsList,
+    setContactList, originalContactsList, setOriginalContactsList }) {
 
-    //lists of contats
-    const [contactsList, setContactList] = useState([]);
-    const [originalContactsList, setOriginalContactsList] = useState([]);
     useEffect(() => {
         async function getContactsList() {
             const res = await fetch('http://localhost:5000/api/Chats', {
@@ -35,7 +33,7 @@ function LeftPanel({ changeContact, me, sentList }) {
 
     //setter of the search for contacts
     const handleSearch = async function (q) {
-        const searchedContactsList = doSearch(originalContactsList,q);
+        const searchedContactsList = doSearch(originalContactsList, q);
         setContactList(searchedContactsList);
     }
 
@@ -58,7 +56,20 @@ function LeftPanel({ changeContact, me, sentList }) {
             const newContact = JSON.parse(result);
             setOriginalContactsList([...originalContactsList, newContact]);
             setContactList([...contactsList, newContact]);
-                        
+            async function getContactsList() {
+                const res = await fetch('http://localhost:5000/api/Chats', {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: 'bearer ' + me.token // attach the token
+                    },
+                });
+                const fetchedData = await res.json();
+                setContactList(fetchedData);
+                setOriginalContactsList(fetchedData);
+            }
+
+            getContactsList();
+
         } else {
             console.log('Error:', res.status);
         }

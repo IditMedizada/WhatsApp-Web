@@ -7,7 +7,10 @@ function BigBlock({ me }) {
 
   const [selectedContact, setSelectedContact] = useState(null);
   const [sentList, setSentList] = useState([]);
-  
+  //lists of contats
+  const [contactsList, setContactList] = useState([]);
+  const [originalContactsList, setOriginalContactsList] = useState([]);
+
 
   async function getMessagesForContact(contact, me) {
     const res = await fetch(`http://localhost:5000/api/Chats/${contact.id}/Messages`, {
@@ -17,9 +20,6 @@ function BigBlock({ me }) {
       },
     });
     const fetchedData = await res.json();
-    // const sortedMessages = fetchedData.sort((a, b) => {
-    //   return new Date(a.created) - new Date(b.created);
-    // });
     setSentList(fetchedData);
   };
 
@@ -41,6 +41,21 @@ function BigBlock({ me }) {
       const newMessage = JSON.parse(result);
       setSentList([...sentList, newMessage]);
       setSelectedContact(selectedContact);
+
+      async function getContactsList() {
+        const res = await fetch('http://localhost:5000/api/Chats', {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'bearer ' + me.token // attach the token
+          },
+        });
+        const fetchedData = await res.json();
+        setContactList(fetchedData);
+        setOriginalContactsList(fetchedData);
+      }
+
+      getContactsList();
+
     } else {
       console.log('Error:', res.status);
     }
@@ -56,8 +71,10 @@ function BigBlock({ me }) {
     <div id="frame">
 
       {/* contacts, profile and search for contacts */}
-      <LeftPanel changeContact={changeContact} sentList={sentList} me={me} />
-
+      <LeftPanel changeContact={changeContact} sentList={sentList} me={me}
+        contactsList={contactsList} setContactList={setContactList}
+        originalContactsList={originalContactsList}
+        setOriginalContactsList={setOriginalContactsList} />
       {/* messages, contact profile and input messages */}
       <RightPanel selectedContact={selectedContact} me={me}
         sentList={sentList} addMassage={addMassage} />

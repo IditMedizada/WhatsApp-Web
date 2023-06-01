@@ -49,10 +49,24 @@ const getUsers = async (token) => {
     const userContacts = user.contacts;
     for (const contact of userContacts) {
         const newContact = await User.findOne({ username: contact.username });
-        const lastMessage = await Message.findOne({ 'sender.username': newContact.username })
+        const lastMessage = await Message.findOne({
+            $or: [
+              {
+                $and: [
+                  { 'sender.username': user.username },
+                  { receiver: newContact.username },
+                ]
+              },
+              {
+                $and: [
+                  { 'sender.username': newContact.username },
+                  { receiver: user.username },
+                ]
+              }
+            ]
+          })
             .sort({ created: -1 })
             .select('content id created');
-
         const userWithLastMessage = {
             id: newContact.id,
             user: {

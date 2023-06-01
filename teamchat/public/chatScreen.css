@@ -400,7 +400,7 @@ body {
 }
 
 #frame .content .messages ul li.replies:last-child {
-  margin-bottom: 10%;
+  margin-bottom: 50px;
 }
 
 
