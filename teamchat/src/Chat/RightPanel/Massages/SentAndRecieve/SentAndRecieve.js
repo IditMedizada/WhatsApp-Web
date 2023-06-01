@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 //the messages that i sent to my contact, and my image
-function Sent({ Massage, contact, me }) {
+function SentAndRecieve({ Massage, contact, me }) {
   const [data, setData] = useState(null);
 
   useEffect(() => {
@@ -39,4 +39,4 @@ function Sent({ Massage, contact, me }) {
 
 }
 
-export default Sent;
+export default SentAndRecieve;

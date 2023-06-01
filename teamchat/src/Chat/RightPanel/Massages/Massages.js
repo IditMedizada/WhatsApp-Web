@@ -1,4 +1,4 @@
-import SentListResults from "./Sent/SentListResults";
+import SentAndRecieveListResults from "./SentAndRecieve/SentAndRecieveListResults";
 
 function Massages({ sentList, contact, me }) {
 
@@ -6,7 +6,7 @@ function Massages({ sentList, contact, me }) {
         // <!--Massages-->
         <div className="messages">
             <ul className="listClass">
-                <SentListResults Massages={sentList} contact={contact} me={me} />
+                <SentAndRecieveListResults Massages={sentList} contact={contact} me={me} />
                 {/* <Replied /> */}
             </ul>
         </div>

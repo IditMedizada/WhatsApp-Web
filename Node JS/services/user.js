@@ -51,6 +51,17 @@ const login = async (username1, password) => {
 const postUserDetails = async (username1, token) => {
     const newUser = await User.findOne({ username: username1 });
     const user = await User.findOne({ token });
+
+
+
+    const userHasContact = await User.findOne({
+        username: user.username,
+        contacts: { $elemMatch: { username: newUser.username } }
+    });
+
+    if (userHasContact) {
+        return null;
+    }
     const newContact = {
         username: username1
     };
@@ -58,6 +69,7 @@ const postUserDetails = async (username1, token) => {
 
     await user.save(); // Save the updated user document
     return newUser;
+
 };
 
 module.exports = { createUser, getUserDetails, login, postUserDetails };

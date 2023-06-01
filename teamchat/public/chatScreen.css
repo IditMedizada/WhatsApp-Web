@@ -369,25 +369,40 @@ body {
 
 
 
-#frame .content .messages ul li.sent img {
-  margin: 6px 8px 0 0;
+/* my messages */
+#frame .content .messages ul li.sent {
+  clear: both; /* Clear the float from previous messages */
 }
 
-/*massages background*/
+#frame .content .messages ul li.sent img {
+  float: left;
+  margin: 6px 0 0 8px;
+}
+
 #frame .content .messages ul li.sent p {
   background: rgb(3, 4, 66);
 }
 
 /*design of send massage*/
+/* Friend's messages */
+#frame .content .messages ul li.replies {
+  clear: both; /* Clear the float from previous messages */
+}
+
 #frame .content .messages ul li.replies img {
-  float: right;
-  margin: 6px 0 2 8px;
+  float: right; /* Align the friend's image to the left */
+  margin: 6px 8px 2px 0;
 }
 
 #frame .content .messages ul li.replies p {
-  background: #f5f5f5;
+  background: #2aa066;
   float: right;
 }
+
+#frame .content .messages ul li.replies:last-child {
+  margin-bottom: 50px;
+}
+
 
 
 /*design of received massage*/
@@ -406,17 +421,6 @@ body {
 }
 
 #frame .content .messages ul li img {
-  /* width: 22px;
-  border-radius: 50%; */
-  /* float: left;
-
-  border-radius: 50%;
-  width: 40; /* Adjust the width and height according to your needs */
-  /* height: 40px;
-  object-fit: cover;
-  border: 3px solid #000; Change the color as desired */ 
-    /* width: 50px;
-  border-radius: 50%; */
   border-radius: 50%;
   width: 30px;
   /* Adjust the width and height according to your needs */
@@ -490,7 +494,7 @@ body {
 }
 
 .messageMargin {
-  margin-bottom: 5px;
+  margin: 5px 3px 5px 3px;
 }
 
 /* welcome message for no friends */
