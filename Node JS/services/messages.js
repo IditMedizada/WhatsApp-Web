@@ -20,6 +20,8 @@ const addMessage = async (msg, token, userId) => {
     return await message.save();
 };
 
+
+//get user messages
 const getUserMessages = async (userId, token) => {
     const receiver = await User.findOne({ id: userId });
     const sender = await User.findOne({ token: token });
@@ -43,6 +45,18 @@ const getUserMessages = async (userId, token) => {
 
 }
 
+//delete contact from user chat list
+const deleteContact = async (token, contactId) => {
+    const user = await User.findOne({ token });
+    const contactToRemove = await User.findOne({ id: contactId });
+    if (contactToRemove) {
+        user.contacts = user.contacts.filter(contact => contact.username !== contactToRemove.username);
+        await user.save();
+      }
+
+};
+
+//get all user contacts including last message
 const getUsers = async (token) => {
     const usersArray = [];
     const user = await User.findOne({ token });
@@ -84,5 +98,5 @@ const getUsers = async (token) => {
         usersArray.push(userWithLastMessage);
     }
     return usersArray;
-}
-module.exports = { addMessage, getUserMessages, getUsers };
+};
+module.exports = { addMessage, getUserMessages, getUsers,deleteContact };

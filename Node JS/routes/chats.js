@@ -12,8 +12,12 @@ router.route('/:id/Messages'). post(messagesController.addMessage);
 
 //get user messages - api/Chats/{id}/Messages
 router.route('/:id/Messages').get(messagesController.getUserMessages);
+router.route('/:id').get(messagesController.getUserMessages);
 
 //get users - /api/Chats
 router.route('/').get(messagesController.getUsers);
+
+//delete contact user from the list
+router.route('/:id').delete(messagesController.deleteContact);
 
 module.exports = router;
