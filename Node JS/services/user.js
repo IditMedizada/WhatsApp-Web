@@ -52,6 +52,9 @@ const postUserDetails = async (username1, token) => {
     const newUser = await User.findOne({ username: username1 });
     const user = await User.findOne({ token });
 
+    if(user.username === newUser.username){
+        return null;
+    }
 
 
     const userHasContact = await User.findOne({

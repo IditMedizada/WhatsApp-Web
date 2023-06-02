@@ -14,13 +14,13 @@ const addMessage = async (req, res) => {
         try {
             // Verify the token is valid
             if (validateToken(token)) {
-                const data = jwt.verify(token, key);
-                //console.log(data);
                 const { msg } = req.body;
                 userId = req.params.id;
-                const message = await messageService.addMessage(msg, token,userId);
-                res.status(200).json( {id: message.id, created: message.created, 
-                    sender: message.sender, content: message.content} );
+                const message = await messageService.addMessage(msg, token, userId);
+                res.status(200).json({
+                    id: message.id, created: message.created,
+                    sender: message.sender, content: message.content
+                });
             } else {
                 res.status(401).json({ error: 'Invalid token' });
 
@@ -34,7 +34,7 @@ const addMessage = async (req, res) => {
 
 };
 
-//get user messages
+//get user messages- with all his contacts
 const getUserMessages = async (req, res) => {
     // If the request has an authorization header
     if (req.headers.authorization) {
@@ -42,14 +42,13 @@ const getUserMessages = async (req, res) => {
         const data = req.headers.authorization.split(" ")[1];
         const parsedData = JSON.parse(data);
         const token = parsedData.token;
-      
+
         try {
             // Verify the token is valid
             if (validateToken(token)) {
-                const data = jwt.verify(token, key);
                 userId = req.params.id;
                 const messages = await messageService.getUserMessages(userId, token);
-                res.status(200).json( messages );
+                res.status(200).json(messages);
             } else {
                 res.status(401).json({ error: 'Invalid token' });
 
@@ -62,20 +61,20 @@ const getUserMessages = async (req, res) => {
         return res.status(403).send('Token required');
 };
 
-const getUsers = async (req, res) => {
+//delete contact from user list chat
+const deleteContact = async (req, res) => {
     // If the request has an authorization header
     if (req.headers.authorization) {
         // Extract the token from that header
         const data = req.headers.authorization.split(" ")[1];
         const parsedData = JSON.parse(data);
         const token = parsedData.token;
-        // console.log('token');
-        // console.log(token);
         try {
             // Verify the token is valid
             if (validateToken(token)) {
-                const users = await messageService.getUsers(token);
-                res.status(200).json( users );
+                contactId = req.params.id;
+                await messageService.getUsers(token, contactId);
+                res.status(200);
             } else {
                 console.log("error2");
                 res.status(401).json({ error: 'Invalid token' });
@@ -88,6 +87,32 @@ const getUsers = async (req, res) => {
         return res.status(403).send('Token required');
 }
 
+//get all the user messages- unclude last message from each contact
+const getUsers = async (req, res) => {
+    // If the request has an authorization header
+    if (req.headers.authorization) {
+        // Extract the token from that header
+        const data = req.headers.authorization.split(" ")[1];
+        const parsedData = JSON.parse(data);
+        const token = parsedData.token;
+        try {
+            // Verify the token is valid
+            if (validateToken(token)) {
+                const users = await messageService.getUsers(token);
+                res.status(200).json(users);
+            } else {
+                console.log("error2");
+                res.status(401).json({ error: 'Invalid token' });
+            }
+        } catch (error) {
+            res.status(500).json({ error: 'Something went wrong' });
+        }
+    }
+    else
+        return res.status(403).send('Token required');
+}
+
+//validate Token
 function validateToken(token) {
     try {
         const decoded = jwt.verify(token, key);
@@ -97,4 +122,4 @@ function validateToken(token) {
     }
 }
 
-module.exports = { addMessage, getUserMessages, getUsers };
+module.exports = { addMessage, getUserMessages, getUsers, deleteContact };
