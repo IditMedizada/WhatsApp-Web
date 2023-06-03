@@ -361,6 +361,12 @@ body {
   height: 80%;
   max-height: 400px;
   padding-bottom: 15px;
+  scroll-behavior: smooth; /* Enable smooth scrolling */
+  scroll-snap-type: y mandatory; /* Enable snapping to scroll container */
+}
+
+#frame .content .messages ul {
+  scroll-snap-align: end; /* Snap each message to the bottom of the scroll container */
 }
 
 #frame .content .messages ul li {

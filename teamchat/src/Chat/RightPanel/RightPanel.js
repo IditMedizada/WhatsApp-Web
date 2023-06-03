@@ -2,6 +2,7 @@ import ContactProfile from "./ContactProfile/ContactProfile";
 import Massages from "./Massages/Massages";
 import WriteMassage from "./Massages/WriteMassage/WriteMassage";
 import contacts from "../LeftPanel/Contacts/ContactsList";
+import React, { useRef, useEffect } from "react";
 
 //the side where all the messages with the contact,
 //the contact profile that we chating right now

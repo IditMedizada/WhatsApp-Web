@@ -14,12 +14,30 @@ function ContactListResults({ contacts, changeContact, me, sentList }) {
     changeContact(contact);
   };
 
-  //make a list of all the contacts
-  const contactsList = contacts.map((contact, key) => {
+// Make a list of all the contacts
+const contactsList = contacts
+  .slice() // Create a copy of the contacts array
+  .sort((a, b) => {
+    // Check if there are any messages for the contacts
+    const aLastMessageTime = a.lastMessage ? new Date(a.lastMessage.created).getTime() : 0;
+    const bLastMessageTime = b.lastMessage ? new Date(b.lastMessage.created).getTime() : 0;
+    return bLastMessageTime - aLastMessageTime;
+  })
+  .map((contact, key) => {
     const isSelected = contact === selectedContact;
-    return <Contact key={key} isSelected={isSelected}
-      contact={contact} onSelectContact={onSelectContact} me={me} sentList={sentList} />;
+    return (
+      <Contact
+        key={key}
+        isSelected={isSelected}
+        contact={contact}
+        onSelectContact={onSelectContact}
+        me={me}
+        sentList={sentList}
+      />
+    );
   });
+
+
 
   return (
     //<!--contacts-->

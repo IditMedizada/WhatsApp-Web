@@ -1,9 +1,11 @@
 import { useNavigate } from "react-router-dom";
+import socket from "../../socket";
 //Logout button
-function Button() {
+function Button({ me }) {
   // if pressed we navigate to Login page
   const navigate = useNavigate();
   const handleClick = function () {
+    socket.emit('logout', me.username);
     navigate('/');
   }
 

@@ -1,12 +1,9 @@
 import AddContact from "./AddContact/AddContact";
 import Search from "./Search/Search";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import ContactListResults from "./Contacts/ContactListResults";
-import contacts from "./Contacts/ContactsList";
 import Profile from "./Profile/Profile";
 import { doSearch } from "./Search/doSearch";
-import { createNewContact } from "./Contacts/CreateNewContact";
-import profilePictures from "../profilePicture";
 
 //a side where the profile, search for contacts,
 // the list of contacts and add contacts button

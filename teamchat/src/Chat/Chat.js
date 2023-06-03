@@ -3,10 +3,9 @@ import BigBlock from './BigBlock/BigBlock';
 
 //main chat page
 function Chat({ user }) {
-
   return (
     <>
-      <Button />
+      <Button me={user}/>
       <BigBlock me={user} />
     </>
   );
