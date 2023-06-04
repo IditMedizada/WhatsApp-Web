@@ -334,7 +334,12 @@ body {
   background: #f5f5f5;
 
 }
+.deleteButton{
+  float: right;
+  height: 40px;
 
+  margin-right: 5px;
+}
 /*profile image position*/
 #frame .content .contact-profile img {
   /* width: 40px;

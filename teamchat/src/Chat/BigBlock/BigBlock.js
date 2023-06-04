@@ -47,6 +47,48 @@ function BigBlock({ me }) {
     setSentList(fetchedData);
   };
 
+
+  //delete contact user from the chat
+  const deleteContact = async function () {
+    try {
+      //delete request
+      const res = await fetch(`http://localhost:5000/api/Chats/${selectedContact.id}`, {
+        method: 'delete',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'bearer ' + me.token // attach the token
+        },
+      });
+
+      if (res.ok) {
+        //set the contact chat- remove the contact from chat list
+        setSelectedContact(null);
+
+        async function getContactsList() {
+          const res = await fetch('http://localhost:5000/api/Chats', {
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: 'bearer ' + me.token // attach the token
+            },
+          });
+          const fetchedData = await res.json();
+          setContactList(fetchedData);
+          setOriginalContactsList(fetchedData);
+        }
+
+        getContactsList();
+      } else {
+        console.log('Error:', res.status);
+      }
+    } catch (error) {
+      console.log('Error:', error);
+    }
+  };
+
+
+
+
+
   //each time sent message we add it to the sentList
   const addMassage = async function (message) {
     const sendMessage = {
@@ -106,7 +148,7 @@ function BigBlock({ me }) {
         setOriginalContactsList={setOriginalContactsList} />
       {/* messages, contact profile and input messages */}
       <RightPanel selectedContact={selectedContact} me={me}
-        sentList={sentList} addMassage={addMassage} />
+        sentList={sentList} addMassage={addMassage} deleteContact={deleteContact} />
 
     </div>
   );
