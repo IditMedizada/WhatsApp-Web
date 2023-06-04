@@ -22,10 +22,12 @@ const io = new Server(server, {
     }
 });
 
+const customEnv = require('custom-env');
+customEnv.env(process.env.NODE_ENV,'./config');
 
 
 //connect to MongoDB
-mongoose.connect("mongodb://127.0.0.1:27017/new", {
+mongoose.connect(process.env.CONNECTION_STRING, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 }).then(() => {
@@ -88,4 +90,4 @@ io.on('connection', (socket) => {
 
 
 //start the server
-server.listen(5000);
+server.listen(process.env.PORT);
