@@ -11,6 +11,7 @@ import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 
 function Registration({ list, setList }) {
+  const SIZEOFPIC = 1024*350;
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -44,10 +45,20 @@ function Registration({ list, setList }) {
   //Add picture
   const [addPicture, setAddPicture] = useState('');
   const handleAddPicture = (imageSrc) => {
-    setAddPicture(imageSrc);
-    setErrorMessage('');
-
-  }
+    const encoder = new TextEncoder();
+    const byteLength = encoder.encode(imageSrc).length;
+  
+    //check size of Picture depends on the fact that it works with UTF-8
+    //and therefor checking the size of string gives a good estimation
+    //of size of picture it self
+    if (byteLength <= SIZEOFPIC) {
+      setAddPicture(imageSrc);
+      setErrorMessage('');
+    } else {
+      setAddPicture('');
+      setErrorMessage('Picture size too large, please select a different picture');
+    }
+  };
 
 
   const handleSubmit = async (event) => {
