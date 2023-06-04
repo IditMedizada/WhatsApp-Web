@@ -11,6 +11,8 @@ function BigBlock({ me }) {
   const [contactsList, setContactList] = useState([]);
   const [originalContactsList, setOriginalContactsList] = useState([]);
 
+  //this works when a user recieves a message and he is connected.
+  //he then will be updated automatically on the message
   useEffect(() => {
     socket.on('receive', function (messagePackage) {
       setSentList(prevSentList => [...prevSentList, messagePackage.message]);
