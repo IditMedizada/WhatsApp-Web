@@ -53,6 +53,7 @@ function Login({ setUser }) {
           "token": token
         }
         setUser(user);
+        //emit to the server that a user logged in.
         socket.emit('login', name);
         navigate('/Chat');
       }
