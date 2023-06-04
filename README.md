@@ -55,6 +55,8 @@ The project uses the following technologies:
 * JavaScript
 * Jquery
 * React
+* Node JS
+* Mongo DB
 
 ## installation-and-execution
     
@@ -67,9 +69,16 @@ From your command line:
 # Clone this repository.
 $  git clone -b master1b https://github.com/IditMedizada/WhatsApp-Web.git
 
-# Go into the repository.
+# Go into the repository.  
+
+#Client side:
 $ cd WhatsApp-Web
 $ cd teamchat  
+$ npm start
+
+#Server side
+$ cd WhatsApp-Web
+$ cd "NODE JS"
 $ npm start
 ```
 
