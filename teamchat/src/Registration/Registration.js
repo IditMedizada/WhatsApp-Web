@@ -57,11 +57,6 @@ function Registration({ list, setList }) {
       setErrorMessage('Username must be between 2 and 10 characters.');
       return;
     }
-    //check if username exists
-    // if (list.some(username => username.name === name)) {
-    //   setErrorMessage('Username already exists.');
-    //   return;
-    // }
 
     //handle password
     const regex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,16}$/;

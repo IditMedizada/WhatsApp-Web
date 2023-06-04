@@ -1,7 +1,7 @@
 import LeftPanel from "../LeftPanel/LeftPanel";
 import RightPanel from "../RightPanel/RightPanel";
-import { useState } from "react";
-
+import { useState, useEffect } from "react";
+import socket from "../../socket";
 //the chat block contains the chat and the contacts panel
 function BigBlock({ me }) {
 
@@ -11,6 +11,28 @@ function BigBlock({ me }) {
   const [contactsList, setContactList] = useState([]);
   const [originalContactsList, setOriginalContactsList] = useState([]);
 
+  useEffect(() => {
+    socket.on('receive', function (messagePackage) {
+      setSentList(prevSentList => [...prevSentList, messagePackage.message]);
+      async function getContactsList() {
+        const res = await fetch('http://localhost:5000/api/Chats', {
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: 'bearer ' + me.token // attach the token
+          },
+        });
+        const fetchedData = await res.json();
+        setContactList(fetchedData);
+        setOriginalContactsList(fetchedData);
+      }
+
+      getContactsList();
+    });
+
+    return () => {
+      socket.off('receive'); // Cleanup the event listener on component unmount
+    };
+  }, [selectedContact]);
 
   async function getMessagesForContact(contact, me) {
     const res = await fetch(`http://localhost:5000/api/Chats/${contact.id}/Messages`, {
@@ -55,6 +77,11 @@ function BigBlock({ me }) {
       }
 
       getContactsList();
+      const messagePackage = {
+        message: newMessage,
+        contact: selectedContact
+      };
+      socket.emit('message', messagePackage);
 
     } else {
       console.log('Error:', res.status);

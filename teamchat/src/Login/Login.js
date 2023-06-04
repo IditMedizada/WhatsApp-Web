@@ -6,6 +6,7 @@ import LoginTitle from "./LoginTitle/LoginTitle";
 import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import WebTitle from "../Registration/WebTitle/WebTitle";
+import socket from "../socket";
 
 function Login({ setUser }) {
   const [errorMessage, setErrorMessage] = useState('');
@@ -31,21 +32,6 @@ function Login({ setUser }) {
   // else print Username or Password incorrect message
   const handleClick = async (event) => {
     event.preventDefault();
-    // let found = false;
-    // // check if the list is not empty
-    // if (list && list.length > 0) {
-    //   list.forEach((item) => {
-    //     // goes through all the users in the array and checks if the username and password match them
-    //     if (item.username === name && item.password === password) {
-    //       setUser(item);
-    //       navigate('/Chat');
-    //       found = true;
-    //     }
-    //   });
-    // }
-    // if (!found) {
-    //   setErrorMessage("Username or Password incorrect");
-    // }
 
     const item = {
       "username": name,
@@ -67,6 +53,7 @@ function Login({ setUser }) {
           "token": token
         }
         setUser(user);
+        socket.emit('login', name);
         navigate('/Chat');
       }
     else {

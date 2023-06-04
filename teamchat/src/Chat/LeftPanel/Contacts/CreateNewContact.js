@@ -1,5 +1,3 @@
-import profilePictures from "../../profilePicture";
-
 //counter for contacts
 let contactCounter = 0;
 
@@ -8,7 +6,6 @@ export const createNewContact = (originalContactsList, setOriginalContactsList, 
   const newFriend = {
     id: contactCounter++,
     name: q,
-    image: profilePictures[Math.floor(Math.random() * profilePictures.length)],
     massage: "",
     time: "",
   };
