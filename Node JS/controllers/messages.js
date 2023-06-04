@@ -73,8 +73,8 @@ const deleteContact = async (req, res) => {
             // Verify the token is valid
             if (validateToken(token)) {
                 contactId = req.params.id;
-                await messageService.getUsers(token, contactId);
-                res.status(200);
+                await messageService.deleteContact(token, contactId);
+                res.status(200).json();
             } else {
                 res.status(401).json({ error: 'Invalid token' });
             }

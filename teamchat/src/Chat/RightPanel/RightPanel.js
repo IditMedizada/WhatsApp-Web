@@ -7,7 +7,7 @@ import React, { useRef, useEffect } from "react";
 //the side where all the messages with the contact,
 //the contact profile that we chating right now
 //and the input for messages are shwon
-function RightPanel({ selectedContact, me, addMassage, sentList }) {
+function RightPanel({ selectedContact, me, addMassage, sentList,deleteContact }) {
     if (!selectedContact && contacts.length > 0) {
         selectedContact = contacts[0];
     }
@@ -25,7 +25,7 @@ function RightPanel({ selectedContact, me, addMassage, sentList }) {
     return (
         //<!--Profile contents-->
         <div className="content">
-            <ContactProfile contact={selectedContact} />
+            <ContactProfile contact={selectedContact} deleteContact={deleteContact} />
             <Massages sentList={sentList} contact={selectedContact} me={me} />
             <WriteMassage addMassage={addMassage} />
         </div>
