@@ -13,7 +13,15 @@ An ongoing task of creating WhatsApp Web application using a combination of seve
 - [Authors](#authors)
 
 ## Description
-This is a chat application that allows users to register, login, and communicate with their contacts in real-time. The project includes a registration screen that validates all fields to ensure they are filled in correctly. The login screen checks that the user is registered and authenticated before granting access to the chat screen. The chat screen includes a list of contacts that can be added, searched, and selected for messaging. Messages are sent and received in real-time using React components and state management. The user interface is designed using HTML, CSS, and Bootstrap 5 to provide a modern and responsive design. While there is no server-side functionality yet, the project provides a solid foundation for building a complete chat application with a server backend.
+This is a chat application that allows users to register, login, and communicate with their contacts in real-time. The project includes a server-side component that handles data storage and retrieval using MongoDB as the database.
+
+The registration screen validates all fields to ensure they are filled in correctly, and the user's information is stored in the MongoDB database. The login screen checks the user's credentials against the registered users in the database and authenticates them before granting access to the chat screen.
+
+The chat screen now incorporates sockets to enable real-time communication between users. When a user sends a message, the socket automatically updates the recipient's screen to notify them of the new message. This ensures that users can engage in seamless and immediate conversations.
+
+The chat application features a contact list that allows users to add, search, and select contacts for messaging. The contact information, including the list of contacts and messages, is stored in the MongoDB database and can be accessed and updated in real-time.
+
+The user interface of the application is designed using HTML, CSS, and Bootstrap 5, providing a modern and responsive design. With the server-side functionality and the integration of sockets, this project serves as a robust foundation for building a complete chat application that facilitates efficient communication among users.
 
 ## Screens
 The project includes the following screens:
@@ -31,20 +39,25 @@ The registration screen allows new users to sign up for the chat application. On
 
 
 ### Chat Screen
-The chat screen consists of two main sections. The first section displays a list of contacts with whom the current user is chatting. Each contact is represented by a photo, nickname, and the last message sent with the date and time it arrived. The list of contacts is interactive, and users can switch conversations by clicking on a specific contact. The design of the contact list is user-friendly and visually appealing, with a different color displayed when hovering or pressing on a contact.
+The chat screen consists of two main sections, providing users with an intuitive and seamless chatting experience.
 
-The second section of the chat screen displays the conversation with the selected contact. Users can send messages, and the messages will be displayed with a different design to differentiate between the sent and received messages. The chat screen includes a search bar to find existing contacts quickly, and a button to add a new contact to the list. When the user clicks on the "Add contact" button, a popup window appears, asking for the recipient's username.
+The first section displays a list of contacts with whom the current user is chatting. Each contact is represented by a photo, nickname, and the last message sent or recieved, along with the date and time it arrived. The contact list is interactive, allowing users to switch conversations by simply clicking on a specific contact. To enhance user-friendliness and visual appeal, different colors are displayed when hovering over or pressing a contact.
 
-Finally, the chat screen includes a logout button that allows the user to go back to the login screen. The chat screen is designed to be intuitive and easy to use, providing a seamless chatting experience for users.
+The second section of the chat screen displays the conversation with the selected contact. Additionally, to delete contacts, providing users with the ability to remove contacts from their list. Users can send messages in real-time, and both sent and received messages are displayed with different designs to differentiate between them. This real-time communication feature enhances the user experience by providing immediate message delivery and response. Furthermore, a search bar has been added to the chat screen, allowing users to quickly find existing contacts. Additionally, there is a button to add new contacts to the list. When users click on the "Add contact" button, a popup window appears, prompting them to enter the username of the recipient they want to add.
 
-<img width="389" alt="chat Screen" src="https://github.com/IditMedizada/WhatsApp-Web/assets/110912180/46afba4a-ec48-485e-bba0-08b3fa8d877a">
+To provide users with flexibility, a logout button has been included on the chat screen. Clicking this button allows users to seamlessly transition back to the login screen.
+
+Overall, the chat screen offers an intuitive and visually appealing interface. With features such as real-time messaging, contact deletion, contact search, and the ability to add new contacts, the chat screen provides users with an enhanced and seamless chatting experience.
+
+<img width="389" alt="chat Screen" src="https://github.com/IditMedizada/WhatsApp-Web/assets/110912180/469a8762-0de0-4001-897d-d8c2909a02d8">
+
 
 ## Notes
 
-* Note that due to the lack of a server, all chats will be deleted whenever the user logs out.
 * Upon logging in, a user will be greeted with a welcoming header "Welcome to teamChat!" displayed on the right side of the message area.
 * Messages with more than 20 characters will be truncated on the left panel, with the first 20 characters shown followed by an ellipsis (...) to indicate that there is more to the message.
-* The pictures for the new contacts is beeing selected randomally from a pool of 5 pictures.
+* The chat system does not support large-sized pictures.
+* The chat system does not allow multiple connections with the same user simultaneously. Users can have only one active session per user account at a time. 
 
 ## Technologies Used
 The project uses the following technologies:
@@ -57,6 +70,7 @@ The project uses the following technologies:
 * React
 * Node JS
 * Mongo DB
+* Express
 
 ## installation-and-execution
     
@@ -67,18 +81,20 @@ From your command line:
   
 ```bash
 # Clone this repository.
-$  git clone -b master1b https://github.com/IditMedizada/WhatsApp-Web.git
+$  git clone -b master2 https://github.com/IditMedizada/WhatsApp-Web.git
 
 # Go into the repository.  
 
 #Client side:
 $ cd WhatsApp-Web
 $ cd teamchat  
+$ npm install
 $ npm start
 
 #Server side
 $ cd WhatsApp-Web
 $ cd "NODE JS"
+$ npm install
 $ npm start
 ```
 
